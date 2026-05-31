@@ -1,7 +1,7 @@
 {
-  "name": "tricolor-digital",
+  "name": "vamossp",
   "version": "1.0.0",
-  "description": "São Paulo FC Fan Site - Tricolor Digital",
+  "description": "Vamos São Paulo — Site Oficial da Torcida Tricolor",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
