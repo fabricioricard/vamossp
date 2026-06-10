@@ -1,4 +1,12 @@
+# Dependências
 node_modules/
+
+# Banco de dados SQLite local e arquivos temporários
 tricolor.db
-*.db
+tricolor.db-shm
+tricolor.db-wal
+
+# Logs e arquivos de ambiente
+*.log
 .env
+.DS_Store

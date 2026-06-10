@@ -692,13 +692,7 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   <div class="header-inner">
     <div class="logo-area" onclick="navigateTo('home')">
       <div class="logo-crest">
-        <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50 4 L96 28 L96 92 L50 116 L4 92 L4 28 Z" fill="#141418" stroke="#e8192c" stroke-width="2"/>
-          <rect x="18" y="26" width="21" height="68" rx="1" fill="#e8192c"/>
-          <rect x="39" y="26" width="22" height="68" rx="1" fill="#f0f0f0"/>
-          <rect x="61" y="26" width="21" height="68" rx="1" fill="#181820"/>
-          <text x="50" y="70" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="14" fill="#e8192c" font-weight="bold">SPFC</text>
-        </svg>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg" alt="Escudo do São Paulo FC" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="site-title">VAMOS <em>SÃO PAULO</em></div>
     </div>
@@ -738,13 +732,7 @@ table.st .spfc td:nth-child(3){color:var(--red)}
     </div>
     <div class="hero-crest-wrap">
       <div class="hero-crest-glow"></div>
-      <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 4 L96 28 L96 92 L50 116 L4 92 L4 28 Z" fill="#14141a" stroke="#e8192c" stroke-width="2.5"/>
-        <rect x="18" y="26" width="21" height="68" rx="1.5" fill="#e8192c"/>
-        <rect x="39" y="26" width="22" height="68" rx="1.5" fill="#f0f0f5"/>
-        <rect x="61" y="26" width="21" height="68" rx="1.5" fill="#181822"/>
-        <text x="50" y="70" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="14" fill="#e8192c" font-weight="bold">SPFC</text>
-      </svg>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg" alt="Escudo do São Paulo FC" style="width:100%;height:100%;object-fit:contain; filter: drop-shadow(0 0 40px var(--red-glow));">
     </div>
   </div>
   <!-- Countdown bar -->
@@ -830,8 +818,8 @@ table.st .spfc td:nth-child(3){color:var(--red)}
 <section class="page-section" id="pageStandings">
   <div class="content-wrap">
     <div class="sec-head">
-      <div class="sec-title">Brasileirão 2026 <div class="line"></div></div>
-      <div class="sec-sub">Classificação atualizada — Série A</div>
+      <div class="sec-title">Brasileirão <div class="line"></div></div>
+      <div class="sec-sub">Classificação atualizada automaticamente — Série A</div>
     </div>
     <div class="standings-wrap">
       <div class="standings-legend">
@@ -979,6 +967,7 @@ table.st .spfc td:nth-child(3){color:var(--red)}
 <!-- FOOTER -->
 <footer class="site-footer">
   <strong>VAMOS SÃO PAULO</strong> · São Paulo Futebol Clube Fan Site · Feito com ❤️ pela torcida
+  <br><span id="dataStatus" style="opacity:0.6;font-size:0.75rem;margin-top:4px;display:inline-block"></span>
 </footer>
 
 <script>
@@ -1547,6 +1536,28 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
+
+// ============================================================
+// DATA STATUS
+// ============================================================
+async function updateDataStatus() {
+  try {
+    const res = await fetch('/api/data-status');
+    const status = await res.json();
+    const el = document.getElementById('dataStatus');
+    if (status.lastRefresh) {
+      const d = new Date(status.lastRefresh);
+      const timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      el.textContent = `🔄 Dados atualizados automaticamente às ${timeStr}`;
+    }
+  } catch (e) {
+    // Silently fail
+  }
+}
+// Check status on load and every 5 minutes
+updateDataStatus();
+setInterval(updateDataStatus, 5 * 60 * 1000);
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>

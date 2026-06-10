@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
+const DataService = require('./lib/dataService');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,53 +94,58 @@ function initDatabase() {
   seedData();
 }
 
+// --- Data Service (auto-refresh) ---
+const dataService = new DataService(db);
+// Atualiza automaticamente a cada 2 horas
+dataService.startAutoRefresh(2 * 60 * 60 * 1000);
+
 function seedData() {
   const newsCount = db.prepare('SELECT COUNT(*) as c FROM news').get().c;
   if (newsCount > 0) return;
 
   const newsItems = [
-    { title: 'São Paulo vence clássico e assume a liderança do Brasileirão', summary: 'Tricolor domina o Palmeiras no Morumbi e conquista vitória por 3x1 com grande atuação coletiva.', body: 'Em noite inspirada no MorumBIS, o São Paulo FC venceu o Palmeiras por 3 a 1 em clássico válido pela 12ª rodada do Brasileirão 2026. Os gols foram marcados por Lucas Moura, Calleri e Luciano. O Tricolor agora lidera a competição com 28 pontos.\n\nO técnico elogiou a entrega dos jogadores e a força da torcida que lotou o estádio. "Esse é o São Paulo que a torcida merece. Jogamos com raça e qualidade", disse em coletiva.\n\nCom o resultado, o time paulista abre três pontos de vantagem sobre o segundo colocado e se consolida como forte candidato ao título.', image: '', category: 'campeonato' },
-    { title: 'Cotia revela mais uma joia: meio-campista de 17 anos impressiona', summary: 'Jovem promessa das categorias de base ganha chance no time profissional e mostra qualidade técnica acima da média.', body: 'O Centro de Formação de Atletas de Cotia voltou a mostrar sua força. O meio-campista de apenas 17 anos ganhou sua primeira oportunidade no time profissional durante o treino desta semana e chamou atenção de toda a comissão técnica.\n\nCom passes precisos e visão de jogo diferenciada, o jovem é comparado aos grandes meias revelados pelo Tricolor ao longo de sua história. A expectativa é que ele seja relacionado para o próximo jogo.', image: '', category: 'base' },
-    { title: 'São Paulo anuncia novo patrocinador máster para a temporada', summary: 'Acordo comercial é o maior da história do clube e reforça o projeto de modernização institucional.', body: 'O São Paulo Futebol Clube anunciou nesta quinta-feira o novo patrocinador máster para a temporada 2026. O contrato, válido por três anos, é considerado o maior da história do clube em termos de valores.\n\nA diretoria destacou que os recursos serão investidos em infraestrutura, contratações e no programa de categorias de base. "É um marco para o São Paulo. Estamos construindo um clube cada vez mais forte dentro e fora de campo", afirmou o presidente.', image: '', category: 'institucional' },
-    { title: 'Calleri atinge marca histórica: 100 gols com a camisa tricolor', summary: 'Artilheiro argentino se consolida como um dos maiores goleadores estrangeiros da história do clube.', body: 'Jonathan Calleri atingiu a marca de 100 gols com a camisa do São Paulo FC. O centésimo gol veio justamente no clássico contra o Palmeiras, em jogada individual que consagrou a vitória tricolor.\n\n"Este clube me deu tudo. Chegar aos 100 gols é um sonho realizado. Quero muitos mais", declarou o argentino emocionado após a partida. Calleri se torna o terceiro estrangeiro com mais gols na história do São Paulo.', image: '', category: 'campeonato' },
-    { title: 'MorumBIS recebe modernização com novo setor premium', summary: 'Estádio ganha área VIP com vista privilegiada e serviços exclusivos para torcedores.', body: 'O estádio MorumBIS passa por mais uma etapa de modernização. O novo setor premium, com capacidade para 2.000 pessoas, oferecerá vista privilegiada do campo, serviço de buffet e estacionamento exclusivo.\n\nA inauguração está prevista para o próximo mês, a tempo do confronto pela Copa do Brasil. O projeto faz parte do plano de valorização do patrimônio do clube e aumento de receitas em dias de jogo.', image: '', category: 'institucional' },
-    { title: 'Tricolor goleia na Libertadores e avança às quartas de final', summary: 'São Paulo vence time colombiano por 4x0 e carimba classificação com rodada de antecedência.', body: 'O São Paulo FC não tomou conhecimento do adversário colombiano e goleou por 4 a 0 no MorumBIS, garantindo a classificação antecipada para as quartas de final da Libertadores 2026.\n\nCom gols de Lucas Moura (2), Luciano e um golaço de falta de Rodrigo Nestor, o Tricolor mostrou um futebol envolvente e eficiente. A torcida fez a festa nas arquibancadas e o time responde dentro de campo.', image: '', category: 'libertadores' }
+    { title: 'Trava a negociação entre São Paulo e Victor Sá; entenda', summary: 'Diferença salarial emperrou a transação nesta terça-feira.', body: 'A negociação entre São Paulo FC e o jogador Victor Sá foi interrompida devido a discrepâncias salariais. O clube avalia outras opções no mercado para reforçar o elenco para a sequência da temporada.', image: '', category: 'campeonato' },
+    { title: 'Santos demonstra interesse em contratar Arboleda', summary: 'Zagueiro está afastado depois de viajar ao Equador sem autorização.', body: 'O Santos tem interesse em contratar o zagueiro Arboleda do São Paulo FC, que atualmente está afastado do grupo principal. A diretoria tricolor avalia propostas para o defensor.', image: '', category: 'campeonato' },
+    { title: 'São Paulo reitera estratégia de mercado em negociações', summary: 'Clube discute permanência de nomes importantes do elenco.', body: 'O São Paulo FC reforçou sua estratégia de mercado ao discutir a permanência de jogadores chave. A diretoria trabalha para manter a base do elenco que tem apresentado bom desempenho no Brasileirão.', image: '', category: 'institucional' },
+    { title: 'Cotia revela mais uma joia: meio-campista de 17 anos impressiona', summary: 'Jovem promessa das categorias de base ganha chance no time profissional e mostra qualidade técnica acima da média.', body: 'O Centro de Formação de Atletas de Cotia voltou a mostrar sua força. O meio-campista de apenas 17 anos ganhou sua primeira oportunidade no time profissional durante o treino desta semana e chamou atenção de toda a comissão técnica.', image: '', category: 'base' },
+    { title: 'Tricolor busca reabilitação no Brasileirão', summary: 'São Paulo foca na recuperação para subir na tabela de classificação.', body: 'Após resultados irregulares, o São Paulo FC trabalha intensamente nos treinos para recuperar a confiança e escalar posições na tabela do Campeonato Brasileiro. O apoio da torcida no MorumBIS será fundamental.', image: '', category: 'campeonato' },
+    { title: 'MorumBIS recebe modernização com novo setor premium', summary: 'Estádio ganha área VIP com vista privilegiada e serviços exclusivos para torcedores.', body: 'O estádio MorumBIS passa por mais uma etapa de modernização. O novo setor premium oferecerá vista privilegiada do campo, serviço de buffet e estacionamento exclusivo, fazendo parte do plano de valorização do patrimônio do clube.', image: '', category: 'institucional' }
   ];
   const insertNews = db.prepare('INSERT INTO news (title, summary, body, image, category) VALUES (?, ?, ?, ?, ?)');
   newsItems.forEach(n => insertNews.run(n.title, n.summary, n.body, n.image, n.category));
 
   const matchItems = [
-    { opponent: 'Corinthians', match_date: '2026-06-08', match_time: '16:00', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 },
-    { opponent: 'Flamengo', match_date: '2026-06-15', match_time: '18:30', stadium: 'Maracanã', competition: 'Brasileirão', is_home: 0 },
-    { opponent: 'Atlético-MG', match_date: '2026-06-22', match_time: '19:00', stadium: 'MorumBIS', competition: 'Copa do Brasil', is_home: 1 },
-    { opponent: 'Racing', match_date: '2026-06-29', match_time: '21:30', stadium: 'MorumBIS', competition: 'Libertadores', is_home: 1 },
-    { opponent: 'Grêmio', match_date: '2026-07-06', match_time: '16:00', stadium: 'Arena do Grêmio', competition: 'Brasileirão', is_home: 0 },
-    { opponent: 'Santos', match_date: '2026-07-13', match_time: '18:30', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 }
+    { opponent: 'Athletico-PR', match_date: '2026-07-12', match_time: '16:00', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 },
+    { opponent: 'Flamengo', match_date: '2026-07-19', match_time: '18:30', stadium: 'Maracanã', competition: 'Brasileirão', is_home: 0 },
+    { opponent: 'Santos', match_date: '2026-07-26', match_time: '19:00', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 },
+    { opponent: 'Palmeiras', match_date: '2026-08-02', match_time: '16:00', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 },
+    { opponent: 'Grêmio', match_date: '2026-08-09', match_time: '18:30', stadium: 'Arena do Grêmio', competition: 'Brasileirão', is_home: 0 },
+    { opponent: 'Juventude', match_date: '2026-08-16', match_time: '16:00', stadium: 'MorumBIS', competition: 'Brasileirão', is_home: 1 }
   ];
   const insertMatch = db.prepare('INSERT INTO matches (opponent, match_date, match_time, stadium, competition, is_home) VALUES (?, ?, ?, ?, ?, ?)');
   matchItems.forEach(m => insertMatch.run(m.opponent, m.match_date, m.match_time, m.stadium, m.competition, m.is_home));
 
   const standingsData = [
-    { position: 1, team: 'São Paulo', points: 28, played: 12, won: 8, drawn: 4, lost: 0, gf: 22, ga: 8 },
-    { position: 2, team: 'Flamengo', points: 25, played: 12, won: 7, drawn: 4, lost: 1, gf: 20, ga: 10 },
-    { position: 3, team: 'Palmeiras', points: 24, played: 12, won: 7, drawn: 3, lost: 2, gf: 19, ga: 11 },
-    { position: 4, team: 'Botafogo', points: 22, played: 12, won: 6, drawn: 4, lost: 2, gf: 17, ga: 9 },
-    { position: 5, team: 'Atlético-MG', points: 21, played: 12, won: 6, drawn: 3, lost: 3, gf: 18, ga: 14 },
-    { position: 6, team: 'Internacional', points: 20, played: 12, won: 5, drawn: 5, lost: 2, gf: 15, ga: 10 },
-    { position: 7, team: 'Fortaleza', points: 19, played: 12, won: 5, drawn: 4, lost: 3, gf: 14, ga: 11 },
-    { position: 8, team: 'Cruzeiro', points: 18, played: 12, won: 5, drawn: 3, lost: 4, gf: 16, ga: 15 },
-    { position: 9, team: 'Grêmio', points: 17, played: 12, won: 4, drawn: 5, lost: 3, gf: 13, ga: 12 },
-    { position: 10, team: 'Bahia', points: 16, played: 12, won: 4, drawn: 4, lost: 4, gf: 14, ga: 14 },
-    { position: 11, team: 'Corinthians', points: 15, played: 12, won: 4, drawn: 3, lost: 5, gf: 12, ga: 13 },
-    { position: 12, team: 'Fluminense', points: 14, played: 12, won: 3, drawn: 5, lost: 4, gf: 11, ga: 12 },
-    { position: 13, team: 'Santos', points: 13, played: 12, won: 3, drawn: 4, lost: 5, gf: 10, ga: 14 },
-    { position: 14, team: 'Vasco', points: 12, played: 12, won: 3, drawn: 3, lost: 6, gf: 11, ga: 16 },
-    { position: 15, team: 'Athletico-PR', points: 11, played: 12, won: 2, drawn: 5, lost: 5, gf: 9, ga: 13 },
-    { position: 16, team: 'Bragantino', points: 10, played: 12, won: 2, drawn: 4, lost: 6, gf: 10, ga: 17 },
-    { position: 17, team: 'Juventude', points: 9, played: 12, won: 2, drawn: 3, lost: 7, gf: 8, ga: 18 },
-    { position: 18, team: 'Vitória', points: 8, played: 12, won: 1, drawn: 5, lost: 6, gf: 9, ga: 19 },
-    { position: 19, team: 'Cuiabá', points: 7, played: 12, won: 1, drawn: 4, lost: 7, gf: 7, ga: 20 },
-    { position: 20, team: 'Goiás', points: 5, played: 12, won: 1, drawn: 2, lost: 9, gf: 6, ga: 22 }
+    { position: 1, team: 'Palmeiras', points: 41, played: 18, won: 12, drawn: 5, lost: 1, gf: 30, ga: 13 },
+    { position: 2, team: 'Flamengo', points: 34, played: 17, won: 10, drawn: 4, lost: 3, gf: 31, ga: 16 },
+    { position: 3, team: 'Fluminense', points: 31, played: 18, won: 9, drawn: 4, lost: 5, gf: 28, ga: 23 },
+    { position: 4, team: 'Athletico-PR', points: 30, played: 18, won: 9, drawn: 3, lost: 6, gf: 24, ga: 18 },
+    { position: 5, team: 'Bragantino', points: 29, played: 18, won: 9, drawn: 2, lost: 7, gf: 25, ga: 19 },
+    { position: 6, team: 'Bahia', points: 26, played: 17, won: 7, drawn: 5, lost: 5, gf: 25, ga: 23 },
+    { position: 7, team: 'Coritiba', points: 26, played: 18, won: 7, drawn: 5, lost: 6, gf: 24, ga: 24 },
+    { position: 8, team: 'São Paulo', points: 25, played: 18, won: 7, drawn: 4, lost: 7, gf: 23, ga: 20 },
+    { position: 9, team: 'Atlético-MG', points: 24, played: 18, won: 7, drawn: 3, lost: 8, gf: 22, ga: 23 },
+    { position: 10, team: 'Corinthians', points: 24, played: 18, won: 6, drawn: 6, lost: 6, gf: 18, ga: 19 },
+    { position: 11, team: 'Internacional', points: 23, played: 18, won: 6, drawn: 5, lost: 7, gf: 20, ga: 21 },
+    { position: 12, team: 'Cruzeiro', points: 22, played: 18, won: 6, drawn: 4, lost: 8, gf: 19, ga: 22 },
+    { position: 13, team: 'Botafogo', points: 21, played: 18, won: 5, drawn: 6, lost: 7, gf: 18, ga: 20 },
+    { position: 14, team: 'Grêmio', points: 20, played: 18, won: 5, drawn: 5, lost: 8, gf: 17, ga: 21 },
+    { position: 15, team: 'Vitória', points: 19, played: 18, won: 5, drawn: 4, lost: 9, gf: 16, ga: 24 },
+    { position: 16, team: 'Vasco', points: 18, played: 18, won: 4, drawn: 6, lost: 8, gf: 15, ga: 23 },
+    { position: 17, team: 'Juventude', points: 17, played: 18, won: 4, drawn: 5, lost: 9, gf: 14, ga: 25 },
+    { position: 18, team: 'Criciúma', points: 16, played: 18, won: 4, drawn: 4, lost: 10, gf: 13, ga: 26 },
+    { position: 19, team: 'Cuiabá', points: 15, played: 18, won: 3, drawn: 6, lost: 9, gf: 12, ga: 24 },
+    { position: 20, team: 'Atlético-GO', points: 10, played: 18, won: 2, drawn: 4, lost: 12, gf: 10, ga: 30 }
   ];
   const insertStanding = db.prepare('INSERT INTO standings (position, team, points, played, won, drawn, lost, gf, ga) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
   standingsData.forEach(s => insertStanding.run(s.position, s.team, s.points, s.played, s.won, s.drawn, s.lost, s.gf, s.ga));
@@ -247,6 +253,21 @@ app.get('/api/matches', (req, res) => {
 app.get('/api/standings', (req, res) => {
   const standings = db.prepare('SELECT * FROM standings ORDER BY position ASC').all();
   res.json(standings);
+});
+
+// Refresh data manually
+app.post('/api/refresh', async (req, res) => {
+  try {
+    const result = await dataService.forceRefresh();
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: 'Erro ao atualizar dados: ' + e.message });
+  }
+});
+
+// Data service status
+app.get('/api/data-status', (req, res) => {
+  res.json(dataService.getStatus());
 });
 
 // Chat history
