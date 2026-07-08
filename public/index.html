@@ -125,7 +125,6 @@ img{max-width:100%;display:block}
   background:var(--bg-1);min-height:420px;
   display:flex;flex-direction:column
 }
-/* Animated noise grain */
 .hero::before{
   content:'';position:absolute;inset:-50%;
   width:200%;height:200%;
@@ -138,7 +137,6 @@ img{max-width:100%;display:block}
   60%{transform:translate(2%,-2%)}70%{transform:translate(-1%,1%)}80%{transform:translate(1%,-1%)}
   90%{transform:translate(-2%,-2%)}100%{transform:translate(0,0)}
 }
-/* Diagonal stripes bg */
 .hero-stripe-bg{
   position:absolute;inset:0;z-index:1;
   background:repeating-linear-gradient(-55deg,transparent,transparent 60px,rgba(232,25,44,.02) 60px,rgba(232,25,44,.02) 61px);
@@ -204,7 +202,6 @@ img{max-width:100%;display:block}
   background:radial-gradient(circle,rgba(232,25,44,.18) 0%,transparent 70%);
   animation:floatglow 6s ease-in-out infinite
 }
-/* Next match countdown strip */
 .hero-countdown-bar{
   position:relative;z-index:2;background:var(--bg-2);
   border-top:1px solid var(--gray-3);
@@ -249,7 +246,6 @@ img{max-width:100%;display:block}
 .page-section.active{display:block}
 .content-wrap{max-width:1300px;margin:0 auto;padding:36px 24px 72px}
 
-/* Two-col home layout */
 .home-grid{
   max-width:1300px;margin:0 auto;padding:36px 24px 72px;
   display:grid;grid-template-columns:1fr 320px;gap:28px
@@ -259,7 +255,6 @@ img{max-width:100%;display:block}
   .home-sidebar{order:-1}
 }
 
-/* Section header */
 .sec-head{margin-bottom:28px}
 .sec-title{
   font-family:var(--font-d);font-size:2.2rem;letter-spacing:2px;
@@ -286,10 +281,9 @@ img{max-width:100%;display:block}
   height:190px;position:relative;overflow:hidden;
   background:var(--bg-3);flex-shrink:0
 }
-/* Category-specific gradient covers */
-.nc-img[data-cat="campeonato"]{background:linear-gradient(135deg,#1a0006,#0a050a)}
-.nc-img[data-cat="libertadores"]{background:linear-gradient(135deg,#0a0f00,#0a0a0a)}
-.nc-img[data-cat="base"]{background:linear-gradient(135deg,#00061a,#0a0a0a)}
+.nc-img[data-cat="ge"]{background:linear-gradient(135deg,#1a0006,#0a050a)}
+.nc-img[data-cat="spfcnet"]{background:linear-gradient(135deg,#00061a,#0a0a0a)}
+.nc-img[data-cat="saopaulofc"]{background:linear-gradient(135deg,#001a06,#0a0a0a)}
 .nc-img[data-cat="institucional"]{background:linear-gradient(135deg,#0a0a00,#0a0a0a)}
 .nc-img[data-cat="geral"]{background:linear-gradient(135deg,#1a0606,#0a0a0a)}
 
@@ -304,9 +298,9 @@ img{max-width:100%;display:block}
   text-transform:uppercase;letter-spacing:1.5px;
   padding:3px 10px;border-radius:3px;color:#fff
 }
-.nc-cat.campeonato{background:var(--red)}
-.nc-cat.libertadores{background:var(--gold);color:#000}
-.nc-cat.base{background:var(--blue)}
+.nc-cat.ge{background:var(--red)}
+.nc-cat.spfcnet{background:var(--blue)}
+.nc-cat.saopaulofc{background:var(--green)}
 .nc-cat.institucional{background:var(--gray-2)}
 .nc-cat.geral{background:var(--bg-4)}
 
@@ -359,7 +353,6 @@ img{max-width:100%;display:block}
   white-space:pre-line;max-width:740px
 }
 
-/* Comments */
 .comments-sec{margin-top:48px;padding-top:32px;border-top:1px solid var(--gray-3)}
 .comments-sec h3{
   font-family:var(--font-d);font-size:1.6rem;letter-spacing:1px;
@@ -402,9 +395,6 @@ img{max-width:100%;display:block}
 .login-prompt a{color:var(--red);font-weight:700;cursor:pointer}
 .login-prompt a:hover{text-decoration:underline}
 
-/* =========================================================
-   CATEGORY PILLS
-   ========================================================= */
 .cat-pills{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
 .pill{
   padding:6px 16px;border-radius:20px;font-size:.78rem;font-weight:700;
@@ -415,13 +405,13 @@ img{max-width:100%;display:block}
 .pill:hover,.pill.active{background:var(--red);color:#fff;border-color:var(--red)}
 
 /* =========================================================
-   MATCHES PAGE
+   MATCHES PAGE - CORREÇÃO DE ALINHAMENTO
    ========================================================= */
 .match-list{display:flex;flex-direction:column;gap:14px}
 .match-card{
   background:var(--bg-2);border-radius:var(--r);padding:20px 24px;
   border:1px solid var(--gray-3);display:grid;
-  grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;
+  grid-template-columns:1fr 60px 1fr 220px;align-items:center;gap:12px;
   transition:var(--trans);position:relative;overflow:hidden
 }
 .match-card::before{
@@ -430,14 +420,17 @@ img{max-width:100%;display:block}
 }
 .match-card.away::before{background:var(--gray-2)}
 .match-card:hover{border-color:var(--red);transform:translateX(4px)}
-.match-team{font-family:var(--font-c);font-size:1.1rem;font-weight:800;letter-spacing:.5px}
+.match-team{font-family:var(--font-c);font-size:1.1rem;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+.match-team-home{text-align:right}
+.match-team-away{text-align:left}
 .match-vs{
   font-family:var(--font-d);font-size:1.6rem;color:var(--gray-2);
-  text-align:center;letter-spacing:2px
+  letter-spacing:2px;text-align:center;
+  display:flex;justify-content:center;align-items:center
 }
-.match-info{text-align:right}
+.match-info{text-align:right;width:100%;min-width:0}
 .match-date{font-family:var(--font-c);font-weight:700;font-size:.95rem}
-.match-detail{color:var(--gray-1);font-size:.8rem;margin-top:2px}
+.match-detail{color:var(--gray-1);font-size:.8rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .match-badge{
   display:inline-block;margin-top:6px;
   font-family:var(--font-c);font-size:.7rem;font-weight:800;
@@ -451,6 +444,7 @@ img{max-width:100%;display:block}
   .match-card{grid-template-columns:1fr;gap:8px;text-align:center}
   .match-card::before{width:100%;height:3px;bottom:auto}
   .match-info{text-align:center}
+  .match-team-home,.match-team-away{text-align:center}
 }
 
 /* =========================================================
@@ -464,6 +458,7 @@ img{max-width:100%;display:block}
 .leg-item{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--gray-1)}
 .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .leg-dot.l{background:var(--blue)}
+.leg-dot.pre{background:#5a2d82}
 .leg-dot.s{background:var(--gold)}
 .leg-dot.r{background:var(--red)}
 table.st{width:100%;border-collapse:collapse;font-size:.88rem}
@@ -480,12 +475,15 @@ table.st .spfc td{background:rgba(232,25,44,.07)}
 table.st .spfc:hover td{background:rgba(232,25,44,.13)}
 table.st .spfc td{font-weight:700}
 table.st .spfc td:nth-child(3){color:var(--red)}
+table.st tr.pre td{background:rgba(90,45,130,.05)}
+table.st tr.pre:hover td{background:rgba(90,45,130,.1)}
 .pos-badge{
   font-family:var(--font-c);font-weight:800;font-size:.95rem;
   display:inline-flex;align-items:center;justify-content:center;
   width:24px;height:24px;border-radius:4px
 }
 .zl .pos-badge{background:var(--blue-dim);color:var(--blue)}
+.pre .pos-badge{background:rgba(90,45,130,.15);color:#5a2d82}
 .zs .pos-badge{background:var(--gold-dim);color:var(--gold)}
 .zr .pos-badge{background:rgba(232,25,44,.15);color:var(--red)}
 .pts-bold{font-weight:800}
@@ -514,9 +512,9 @@ table.st .spfc td:nth-child(3){color:var(--red)}
 .chat-msgs{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
 .chat-msg{display:flex;gap:10px;align-items:flex-start}
 .chat-av{
-  width:28px;height:28px;border-radius:50%;background:var(--red);
+  width:48px;height:48px;border-radius:50%;background:var(--red);
   display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;font-weight:800;flex-shrink:0;color:#fff
+  font-size:1.2rem;font-weight:800;flex-shrink:0;color:#fff
 }
 .chat-bubble{
   background:var(--bg-3);padding:8px 12px;
@@ -553,10 +551,10 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   border:1px solid var(--gray-3);padding:28px
 }
 .pav-lg{
-  width:72px;height:72px;border-radius:50%;background:var(--red);
+  width:120px;height:120px;border-radius:50%;background:var(--red);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-size:2rem;color:#fff;
-  margin-bottom:20px;border:3px solid rgba(232,25,44,.3)
+  font-family:var(--font-d);font-size:3.5rem;color:#fff;
+  margin:0 auto 20px;border:4px solid rgba(232,25,44,.3)
 }
 .form-group{margin-bottom:14px}
 .form-group label{
@@ -684,10 +682,8 @@ table.st .spfc td:nth-child(3){color:var(--red)}
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="tbar"></div>
 
-<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-area" onclick="navigateTo('home')">
@@ -711,7 +707,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </header>
 
-<!-- HERO -->
 <div class="hero" id="heroBanner">
   <div class="hero-stripe-bg"></div>
   <div class="hero-glow"></div>
@@ -728,14 +723,14 @@ table.st .spfc td:nth-child(3){color:var(--red)}
         <div class="hero-trophy"><div class="trophy-n">3</div><div class="trophy-l">Libertadores</div></div>
         <div class="hero-trophy"><div class="trophy-n">3</div><div class="trophy-l">Mundiais</div></div>
         <div class="hero-trophy"><div class="trophy-n">1</div><div class="trophy-l">Sul-Americana</div></div>
+        <div class="hero-trophy"><div class="trophy-n">1</div><div class="trophy-l">Copa do Brasil</div></div>
       </div>
     </div>
     <div class="hero-crest-wrap">
       <div class="hero-crest-glow"></div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg" alt="Escudo do São Paulo FC" style="width:100%;height:100%;object-fit:contain; filter: drop-shadow(0 0 40px var(--red-glow));">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg" alt="Escudo do São Paulo FC" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 40px var(--red-glow));">
     </div>
   </div>
-  <!-- Countdown bar -->
   <div class="hero-countdown-bar" id="countdownBar" style="display:none">
     <div class="hero-countdown-inner">
       <span class="cd-label">⚽ Próximo jogo</span>
@@ -751,40 +746,25 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </div>
 
-<!-- HOME PAGE -->
 <div class="home-grid" id="pageHome">
   <div class="home-main">
     <div class="sec-head">
       <div class="sec-title">Últimas Notícias <div class="line"></div></div>
     </div>
-    <div class="news-grid" id="homeNewsGrid">
-      <!-- skeleton -->
-      <div class="skeleton" style="height:280px"></div>
-      <div class="skeleton" style="height:280px"></div>
-      <div class="skeleton" style="height:280px"></div>
-    </div>
+    <div class="news-grid" id="homeNewsGrid"></div>
   </div>
   <div class="home-sidebar">
     <div class="scard">
       <div class="scard-hdr"><span class="ic">⚽</span> Próximos Jogos</div>
-      <div class="scard-body" id="sidebarMatches">
-        <div class="skeleton" style="height:36px;margin:8px 16px;border-radius:4px"></div>
-        <div class="skeleton" style="height:36px;margin:8px 16px;border-radius:4px"></div>
-        <div class="skeleton" style="height:36px;margin:8px 16px;border-radius:4px"></div>
-      </div>
+      <div class="scard-body" id="sidebarMatches"></div>
     </div>
     <div class="scard">
       <div class="scard-hdr"><span class="ic">▲</span> Brasileirão</div>
-      <div class="scard-body" id="sidebarStandings">
-        <div class="skeleton" style="height:28px;margin:6px 16px;border-radius:4px"></div>
-        <div class="skeleton" style="height:28px;margin:6px 16px;border-radius:4px"></div>
-        <div class="skeleton" style="height:28px;margin:6px 16px;border-radius:4px"></div>
-      </div>
+      <div class="scard-body" id="sidebarStandings"></div>
     </div>
   </div>
 </div>
 
-<!-- NEWS PAGE -->
 <section class="page-section" id="pageNews">
   <div class="content-wrap">
     <div class="sec-head">
@@ -793,9 +773,9 @@ table.st .spfc td:nth-child(3){color:var(--red)}
     </div>
     <div class="cat-pills" id="catPills">
       <span class="pill active" data-cat="all">Todas</span>
-      <span class="pill" data-cat="campeonato">Campeonato</span>
-      <span class="pill" data-cat="libertadores">Libertadores</span>
-      <span class="pill" data-cat="base">Base</span>
+      <span class="pill" data-cat="ge">GE</span>
+      <span class="pill" data-cat="spfcnet">SPFCNET</span>
+      <span class="pill" data-cat="saopaulofc">SAO PAULO FC</span>
       <span class="pill" data-cat="institucional">Institucional</span>
     </div>
     <div class="news-grid" id="newsGrid"></div>
@@ -803,7 +783,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </section>
 
-<!-- MATCHES PAGE -->
 <section class="page-section" id="pageMatches">
   <div class="content-wrap">
     <div class="sec-head">
@@ -814,7 +793,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </section>
 
-<!-- STANDINGS PAGE -->
 <section class="page-section" id="pageStandings">
   <div class="content-wrap">
     <div class="sec-head">
@@ -823,9 +801,10 @@ table.st .spfc td:nth-child(3){color:var(--red)}
     </div>
     <div class="standings-wrap">
       <div class="standings-legend">
-        <span class="leg-item"><span class="leg-dot l"></span> Libertadores (G4)</span>
-        <span class="leg-item"><span class="leg-dot s"></span> Sul-Americana (G6)</span>
-        <span class="leg-item"><span class="leg-dot r"></span> Rebaixamento (Z4)</span>
+        <span class="leg-item"><span class="leg-dot l"></span> Libertadores (1º ao 4º)</span>
+        <span class="leg-item"><span class="leg-dot pre"></span> Pré-Libertadores (5º)</span>
+        <span class="leg-item"><span class="leg-dot s"></span> Sul-Americana (6º ao 11º)</span>
+        <span class="leg-item"><span class="leg-dot r"></span> Rebaixamento (17º ao 20º)</span>
       </div>
       <div style="overflow-x:auto">
         <table class="st" id="standingsTable">
@@ -850,7 +829,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </section>
 
-<!-- CHAT PAGE -->
 <section class="page-section" id="pageChat">
   <div class="content-wrap">
     <div class="sec-head">
@@ -871,7 +849,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </section>
 
-<!-- PROFILE PAGE -->
 <section class="page-section" id="pageProfile">
   <div class="content-wrap">
     <div class="sec-head">
@@ -879,7 +856,14 @@ table.st .spfc td:nth-child(3){color:var(--red)}
     </div>
     <div class="profile-grid">
       <div class="profile-card">
-        <div class="pav-lg" id="profileAvatar">?</div>
+        <div style="text-align:center;margin-bottom:20px;">
+          <img id="profileAvatarImg" src="" alt="Avatar" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--red);display:none;margin:0 auto 20px;">
+          <div class="pav-lg" id="profileAvatarText" style="margin:0 auto;">?</div>
+          <label class="btn btn-ghost btn-sm" style="margin-top:10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+            📷 Alterar Foto
+            <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+          </label>
+        </div>
         <form id="profileForm" onsubmit="saveProfile(event)">
           <div class="form-err" id="profileError"></div>
           <div class="form-group">
@@ -913,7 +897,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </section>
 
-<!-- LOGIN MODAL -->
 <div class="modal-ov" id="loginModal">
   <div class="modal">
     <button class="modal-x" onclick="closeModals()">×</button>
@@ -935,7 +918,6 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </div>
 
-<!-- REGISTER MODAL -->
 <div class="modal-ov" id="registerModal">
   <div class="modal">
     <button class="modal-x" onclick="closeModals()">×</button>
@@ -961,20 +943,38 @@ table.st .spfc td:nth-child(3){color:var(--red)}
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <strong>VAMOS SÃO PAULO</strong> · São Paulo Futebol Clube Fan Site · Feito com ❤️ pela torcida
   <br><span id="dataStatus" style="opacity:0.6;font-size:0.75rem;margin-top:4px;display:inline-block"></span>
 </footer>
 
-<script>
-/* ============================================================
-   VAMOS SÃO PAULO — Client-Side Application v2
-   ============================================================ */
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAucS7aZYpKlZ3gCUQuvBeMLvec4kzP7bM",
+    authDomain: "vamossp-3362f.firebaseapp.com",
+    projectId: "vamossp-3362f",
+    storageBucket: "vamossp-3362f.firebasestorage.app",
+    messagingSenderId: "1088944245805",
+    appId: "1:1088944245805:web:c992f0ecf4707e8ce57ca4"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  window.firebaseAuth = auth;
+  window.firebaseSignIn = (authRef, email, pass) => authRef.signInWithEmailAndPassword(email, pass);
+  window.firebaseSignUp = (authRef, email, pass) => authRef.createUserWithEmailAndPassword(email, pass);
+  window.firebaseSignOut = () => auth.signOut();
+  window.firebaseOnAuthState = (callback) => auth.onAuthStateChanged(callback);
+</script>
+
+<script>
 let currentUser = null;
 let allNews = [];
 let socket = null;
@@ -984,34 +984,58 @@ let nextMatch = null;
 const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const CAT_LABEL = {campeonato:'Campeonato',libertadores:'Libertadores',base:'Base',institucional:'Institucional',geral:'Geral'};
+const CAT_LABEL = {ge:'GE',spfcnet:'SPFCNET',saopaulofc:'São Paulo FC',institucional:'Institucional',geral:'Geral'};
 
-// --- Init ---
 document.addEventListener('DOMContentLoaded', async () => {
-  await checkAuth();
   await loadHomeData();
   setupNavigation();
   setupCategoryPills();
 });
 
-// ============================================================
-// AUTH
-// ============================================================
-async function checkAuth() {
-  try {
-    const res = await fetch('/api/me');
-    const data = await res.json();
-    if (data.user) { currentUser = data.user; updateAuthUI(); }
-  } catch(e) {}
-}
+window.firebaseOnAuthState((user) => {
+  if (user) {
+    user.getIdToken().then(token => {
+      const pendingUsername = localStorage.getItem('pendingUsername') || user.email.split('@')[0];
+      
+      return fetch('/api/auth/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          token: token, 
+          email: user.email, 
+          username: user.displayName || pendingUsername 
+        })
+      }).then(res => res.json());
+      
+    }).then(data => {
+      if (data.user) {
+        currentUser = data.user;
+        updateAuthUI();
+        localStorage.removeItem('pendingUsername');
+      }
+    }).catch(e => {
+      console.error("Erro ao sincronizar com backend:", e);
+    });
+  } else {
+    currentUser = null;
+    updateAuthUI();
+  }
+});
 
 function updateAuthUI() {
   const authDiv = document.getElementById('headerAuth');
   if (currentUser) {
-    const ini = currentUser.username.charAt(0).toUpperCase();
+    let avatarHtml = '';
+    if (currentUser.avatar) {
+      avatarHtml = `<img src="${currentUser.avatar}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--red)">`;
+    } else {
+      const ini = currentUser.username.charAt(0).toUpperCase();
+      avatarHtml = `<div class="u-av">${ini}</div>`;
+    }
+    
     authDiv.innerHTML = `
       <div class="user-badge" onclick="navigateTo('profile')">
-        <div class="u-av">${ini}</div>
+        ${avatarHtml}
         <span>${currentUser.username}</span>
       </div>`;
     document.getElementById('chatInput').disabled = false;
@@ -1026,20 +1050,52 @@ function updateAuthUI() {
   }
 }
 
+async function uploadAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('profileAvatarImg').src = e.target.result;
+    document.getElementById('profileAvatarImg').style.display = 'block';
+    document.getElementById('profileAvatarText').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  try {
+    showToast('Enviando avatar...');
+    const res = await fetch('/api/profile/avatar', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    
+    currentUser.avatar = data.avatar;
+    updateAuthUI();
+    showToast('Avatar atualizado com sucesso! 📸');
+  } catch (e) {
+    showToast('Erro ao enviar: ' + e.message);
+    loadProfile();
+  }
+}
+
 async function doLogin(e) {
   e.preventDefault();
   const errEl = document.getElementById('loginError');
   errEl.classList.remove('show');
   try {
-    const res = await fetch('/api/login', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ email: document.getElementById('loginEmail').value, password: document.getElementById('loginPassword').value })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    currentUser = data.user;
-    closeModals(); updateAuthUI(); showToast('Bem-vindo de volta, ' + currentUser.username + '! 🔴⚪⚫');
-  } catch(e) { errEl.textContent = 'Erro de conexão'; errEl.classList.add('show'); }
+    await window.firebaseSignIn(window.firebaseAuth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
+    closeModals();
+  } catch (error) {
+    let msg = 'Erro ao fazer login.';
+    if (error.code === 'auth/invalid-credential') msg = 'Email ou senha incorretos.';
+    errEl.textContent = msg;
+    errEl.classList.add('show');
+  }
 }
 
 async function doRegister(e) {
@@ -1047,49 +1103,27 @@ async function doRegister(e) {
   const errEl = document.getElementById('registerError');
   errEl.classList.remove('show');
   try {
-    const res = await fetch('/api/register', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        username: document.getElementById('regUsername').value,
-        email: document.getElementById('regEmail').value,
-        password: document.getElementById('regPassword').value
-      })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    currentUser = data.user;
-    closeModals(); updateAuthUI(); showToast('Seja bem-vindo à torcida digital! ⚽');
-  } catch(e) { errEl.textContent = 'Erro de conexão'; errEl.classList.add('show'); }
+    await window.firebaseSignUp(window.firebaseAuth, document.getElementById('regEmail').value, document.getElementById('regPassword').value);
+    localStorage.setItem('pendingUsername', document.getElementById('regUsername').value);
+    closeModals();
+  } catch (error) {
+    let msg = 'Erro ao criar conta.';
+    if (error.code === 'auth/email-already-in-use') msg = 'Este email já está cadastrado.';
+    if (error.code === 'auth/weak-password') msg = 'A senha deve ter pelo menos 6 caracteres.';
+    errEl.textContent = msg;
+    errEl.classList.add('show');
+  }
 }
 
 async function logout() {
-  await fetch('/api/logout', { method:'POST' });
-  currentUser = null;
-  updateAuthUI();
-  navigateTo('home');
-  showToast('Você saiu da sua conta');
-}
-
-async function saveProfile(e) {
-  e.preventDefault();
-  const errEl = document.getElementById('profileError');
-  errEl.classList.remove('show');
   try {
-    const res = await fetch('/api/profile', {
-      method:'PUT', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ username: document.getElementById('profileUsername').value, bio: document.getElementById('profileBio').value })
-    });
-    const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; errEl.classList.add('show'); return; }
-    currentUser.username = document.getElementById('profileUsername').value;
-    currentUser.bio = document.getElementById('profileBio').value;
-    updateAuthUI(); showToast('Perfil atualizado com sucesso!');
-  } catch(e) { errEl.textContent = 'Erro ao salvar'; errEl.classList.add('show'); }
+    await fetch('/api/logout', { method:'POST' });
+    await window.firebaseSignOut(window.firebaseAuth);
+    navigateTo('home');
+    showToast('Você saiu da sua conta');
+  } catch (e) { console.error("Erro no logout", e); }
 }
 
-// ============================================================
-// MODALS
-// ============================================================
 function openModal(type) {
   closeModals();
   document.getElementById(type + 'Modal').classList.add('open');
@@ -1103,9 +1137,6 @@ document.querySelectorAll('.modal-ov').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) closeModals(); });
 });
 
-// ============================================================
-// NAVIGATION
-// ============================================================
 function setupNavigation() {
   document.querySelectorAll('.main-nav a').forEach(a => {
     a.addEventListener('click', e => { e.preventDefault(); navigateTo(a.dataset.page); });
@@ -1119,7 +1150,6 @@ function navigateTo(page) {
   document.getElementById('pageHome').style.display = 'none';
   document.getElementById('heroBanner').style.display = 'none';
 
-  // Reset news detail when leaving
   if (page !== 'news') {
     document.getElementById('newsGrid').style.display = '';
     document.getElementById('newsDetail').classList.remove('active');
@@ -1144,9 +1174,6 @@ function navigateTo(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ============================================================
-// COUNTDOWN
-// ============================================================
 function startCountdown(match) {
   nextMatch = match;
   const bar = document.getElementById('countdownBar');
@@ -1161,18 +1188,19 @@ function startCountdown(match) {
   cdMatch.textContent = teams;
   cdComp.textContent = match.competition;
 
-  // Style comp badge
-  const comp = match.competition.toLowerCase();
   const cdCompEl = document.getElementById('cdComp');
+  const comp = match.competition.toLowerCase();
   if (comp.includes('libertadores')) cdCompEl.style.background = 'var(--gold)';
-  else if (comp.includes('copa')) cdCompEl.style.background = 'var(--green)';
+  else if (comp.includes('copa') || comp.includes('sul')) cdCompEl.style.background = 'var(--green)';
   else cdCompEl.style.background = 'var(--red)';
   cdCompEl.style.color = comp.includes('libertadores') ? '#000' : '#fff';
 
   bar.style.display = '';
 
   if (countdownInterval) clearInterval(countdownInterval);
-  const matchTime = new Date(`${match.match_date}T${match.match_time}:00`);
+  
+  const timeStr = match.match_time === 'A confirmar' ? '16:00' : match.match_time;
+  const matchTime = new Date(`${match.match_date}T${timeStr}:00`);
 
   function tick() {
     const now = new Date();
@@ -1182,7 +1210,6 @@ function startCountdown(match) {
       document.getElementById('cdH').textContent = '00';
       document.getElementById('cdM').textContent = '00';
       document.getElementById('cdS').textContent = '00';
-      clearInterval(countdownInterval);
       return;
     }
     const d = Math.floor(diff / 86400000);
@@ -1198,15 +1225,19 @@ function startCountdown(match) {
   countdownInterval = setInterval(tick, 1000);
 }
 
-// ============================================================
-// HOME DATA
-// ============================================================
+// Função para ordenar notícias: institucionais primeiro, depois as outras
+function sortNews(news) {
+  const institucional = news.filter(n => n.category === 'institucional');
+  const outras = news.filter(n => n.category !== 'institucional');
+  return [...institucional, ...outras];
+}
+
 async function loadHomeData() {
   try {
     const [newsRes, matchRes, standRes] = await Promise.all([
       fetch('/api/news'), fetch('/api/matches'), fetch('/api/standings')
     ]);
-    allNews = await newsRes.json();
+    allNews = sortNews(await newsRes.json());
     const matches = await matchRes.json();
     const standings = await standRes.json();
 
@@ -1214,22 +1245,41 @@ async function loadHomeData() {
     renderSidebarMatches(matches.slice(0, 5));
     renderSidebarStandings(standings.slice(0, 8));
     startCountdown(matches[0] || null);
-  } catch(e) { console.error(e); }
+  } catch(e) { console.error("Erro ao carregar dados da home:", e); }
 }
 
 function renderHomeNews(news) {
   document.getElementById('homeNewsGrid').innerHTML = news.map(n => newsCardHTML(n)).join('');
 }
 
+function renderSidebarMatches(matches) {
+  document.getElementById('sidebarMatches').innerHTML = matches.map(m => {
+    const date = formatDate(m.match_date);
+    const teams = m.is_home ? `São Paulo x ${m.opponent}` : `${m.opponent} x São Paulo`;
+    return `<div class="smatch"><div class="teams">${esc(teams)}</div><div class="date">${date}</div></div>`;
+  }).join('');
+}
+
+function renderSidebarStandings(standings) {
+  document.getElementById('sidebarStandings').innerHTML = standings.map(s => {
+    const isSpfc = s.team.includes('São Paulo');
+    return `<div class="sstanding ${isSpfc ? 'hl' : ''}">
+      <div class="spos">${s.position}º</div>
+      <div class="steam">${esc(s.team)}</div>
+      <div class="spts">${s.points} pts</div>
+    </div>`;
+  }).join('');
+}
+
 function newsCardHTML(n) {
   const date = formatDate(n.created_at);
   const cat = n.category || 'geral';
   const label = CAT_LABEL[cat] || 'Geral';
-  const patternSvg = newsPattern(n.id);
+  const imgHTML = n.image ? `<img src="${n.image}" style="width:100%;height:100%;object-fit:cover">` : '';
   return `
     <div class="news-card" onclick="openNewsDetail(${n.id})">
       <div class="nc-img" data-cat="${cat}">
-        <div class="nc-pattern">${patternSvg}</div>
+        ${imgHTML}
         <div class="nc-overlay"></div>
         <span class="nc-cat ${cat}">${label}</span>
       </div>
@@ -1237,50 +1287,67 @@ function newsCardHTML(n) {
         <div class="nc-title">${esc(n.title)}</div>
         <div class="nc-summary">${esc(n.summary)}</div>
         <div class="nc-meta">
-          <span>📅 ${date}</span>
+          <span>${date}</span>
           <span class="read-more">Ler mais →</span>
         </div>
       </div>
     </div>`;
 }
 
-function newsPattern(id) {
-  const p = id % 3;
-  if (p === 0) return `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pg${id}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M0 20h40M20 0v40" stroke="#fff" stroke-width=".6" fill="none"/></pattern></defs><rect width="100%" height="100%" fill="url(#pg${id})"/></svg>`;
-  if (p === 1) return `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pg${id}" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="10" stroke="#fff" stroke-width=".6" fill="none"/></pattern></defs><rect width="100%" height="100%" fill="url(#pg${id})"/></svg>`;
-  return `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="pg${id}" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="20" stroke="#fff" stroke-width="1" fill="none"/></pattern></defs><rect width="100%" height="100%" fill="url(#pg${id})"/></svg>`;
+async function loadMatches() {
+  const res = await fetch('/api/matches');
+  const matches = await res.json();
+  document.getElementById('matchesList').innerHTML = matches.map(m => {
+    const date = formatDate(m.match_date);
+    const homeTeam = m.is_home ? `São Paulo` : m.opponent;
+    const awayTeam = m.is_home ? m.opponent : `São Paulo`;
+    const badgeClass = m.competition.toLowerCase().includes('libertadores') ? 'mb-libertadores' : m.competition.toLowerCase().includes('copa') ? 'mb-copa' : 'mb-brasileiro';
+    return `
+      <div class="match-card ${m.is_home ? '' : 'away'}">
+        <div class="match-team match-team-home">${esc(homeTeam)}</div>
+        <div class="match-vs">VS</div>
+        <div class="match-team match-team-away">${esc(awayTeam)}</div>
+        <div class="match-info">
+          <div class="match-date">${date} · ${m.match_time}</div>
+          <div class="match-detail">${esc(m.stadium)}</div>
+          <span class="match-badge ${badgeClass}">${esc(m.competition)}</span>
+        </div>
+      </div>`;
+  }).join('') || '<p style="text-align:center;color:var(--gray-1);padding:20px">Nenhum jogo programado no momento.</p>';
 }
 
-function renderSidebarMatches(matches) {
-  document.getElementById('sidebarMatches').innerHTML = matches.map(m => {
-    const d = new Date(m.match_date + 'T12:00:00');
-    const dateStr = `${d.getDate()} ${MONTHS[d.getMonth()]}`;
-    const teams = m.is_home ? `São Paulo × ${m.opponent}` : `${m.opponent} × São Paulo`;
-    return `<div class="smatch" onclick="navigateTo('matches')" style="cursor:pointer">
-      <span class="teams">${teams}</span>
-      <span class="date">${dateStr} · ${m.match_time}</span>
-    </div>`;
+async function loadStandings() {
+  const res = await fetch('/api/standings');
+  const standings = await res.json();
+  document.getElementById('standingsBody').innerHTML = standings.map(s => {
+    const isSpfc = s.team && s.team.includes('São Paulo');
+    
+    const zone = s.position <= 4 ? 'zl' : s.position === 5 ? 'pre' : s.position <= 11 ? 'zs' : s.position >= 17 ? 'zr' : '';
+    
+    const gf = s.gf || 0;
+    const ga = s.ga || 0;
+    const sg = gf - ga;
+    
+    return `
+      <tr class="${isSpfc ? 'spfc' : ''} ${zone}">
+        <td><span class="pos-badge">${s.position || '-'}</span></td>
+        <td><div class="team-cell">${esc(s.team)} ${isSpfc ? '<span class="spfc-tag">🔴⚪⚫</span>' : ''}</div></td>
+        <td class="pts-bold">${s.points || 0}</td>
+        <td>${s.played || 0}</td>
+        <td>${s.won || 0}</td>
+        <td>${s.drawn || 0}</td>
+        <td>${s.lost || 0}</td>
+        <td>${gf}</td>
+        <td>${ga}</td>
+        <td>${sg > 0 ? '+'+sg : sg}</td>
+      </tr>`;
   }).join('');
 }
 
-function renderSidebarStandings(standings) {
-  document.getElementById('sidebarStandings').innerHTML = standings.map(s => {
-    const hl = s.team === 'São Paulo' ? ' hl' : '';
-    return `<div class="sstanding${hl}" onclick="navigateTo('standings')" style="cursor:pointer">
-      <span class="spos">${s.position}</span>
-      <span class="steam">${s.team}</span>
-      <span class="spts">${s.points}</span>
-    </div>`;
-  }).join('');
-}
-
-// ============================================================
-// NEWS PAGE
-// ============================================================
 async function loadNews(category) {
   if (!allNews.length) {
     const res = await fetch('/api/news');
-    allNews = await res.json();
+    allNews = sortNews(await res.json());
   }
   let filtered = (category && category !== 'all') ? allNews.filter(n => n.category === category) : allNews;
   const grid = document.getElementById('newsGrid');
@@ -1302,43 +1369,103 @@ function setupCategoryPills() {
 }
 
 async function openNewsDetail(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('pageHome').style.display = 'none';
+  document.getElementById('heroBanner').style.display = 'none';
+  
+  const newsPage = document.getElementById('pageNews');
+  if (newsPage) newsPage.classList.add('active');
+  
+  document.querySelectorAll('.main-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === 'news');
+  });
+  document.querySelector('.main-nav').classList.remove('open');
+
+  const detailWrap = document.getElementById('newsDetail');
+  const grid = document.getElementById('newsGrid');
+  const pills = document.getElementById('catPills');
+
+  detailWrap.innerHTML = '<div class="skeleton" style="height:400px"></div>';
+  detailWrap.classList.add('active');
+  grid.style.display = 'none';
+  pills.style.display = 'none';
+
   try {
-    const [article, comments] = await Promise.all([
-      fetch('/api/news/' + id).then(r => r.json()),
-      fetch('/api/news/' + id + '/comments').then(r => r.json())
-    ]);
-    const cat = article.category || 'geral';
-    const catColors = {campeonato:'var(--red)',libertadores:'var(--gold)',base:'var(--blue)',institucional:'var(--gray-2)',geral:'var(--bg-4)'};
-    const catTextColors = {libertadores:'#000'};
+    const res = await fetch(`/api/news/${id}`);
+    const n = await res.json();
+    const date = formatDate(n.created_at);
+    const label = CAT_LABEL[n.category] || 'Geral';
+    const imgHTML = n.image ? `<img src="${n.image}" style="width:100%;max-height:400px;object-fit:cover;border-radius:var(--r);margin-bottom:24px;border:1px solid var(--gray-3)">` : '';
 
-    const commentFormHTML = currentUser
-      ? `<div class="comment-form-wrap">
-           <textarea id="commentInput" placeholder="Escreva seu comentário..."></textarea>
-           <button class="btn btn-red btn-sm" onclick="postComment(${id})">Enviar</button>
-         </div>`
-      : `<div class="login-prompt">Faça <a onclick="openModal('login')">login</a> para comentar na notícia</div>`;
+    const bodyLength = (n.body || '').length;
+    const readTime = Math.max(1, Math.ceil(bodyLength / 1000));
+    
+    // Função para converter URLs em links clicáveis
+    function convertUrlsToLinks(text) {
+      // Primeiro escapa o HTML para evitar XSS
+      let escaped = esc(text);
+      // Depois substitui URLs por links
+      return escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:var(--red);text-decoration:underline;">$1</a>');
+    }
+    
+    // Extrair o link original do conteúdo (formato: 🔗 Link original: URL)
+    let originalLink = '';
+    const linkMatch = (n.body || '').match(/🔗 Link original:\s*(https?:\/\/[^\s]+)/);
+    if (linkMatch) {
+      originalLink = linkMatch[1];
+    }
+    
+    // Remover a linha de fonte e link do conteúdo principal
+    let cleanedBody = (n.body || 'Conteúdo indisponível')
+      .replace(/---\n📰 Fonte:.*\n🔗 Link original:.*/g, '')
+      .trim();
 
-    const detail = document.getElementById('newsDetail');
-    detail.innerHTML = `
-      <div class="nd-back" onclick="loadNews()">← Voltar às notícias</div>
-      <span class="nd-cat" style="background:${catColors[cat]||'var(--red)'};color:${catTextColors[cat]||'#fff'}">${CAT_LABEL[cat]||'Geral'}</span>
-      <h1 class="nd-title">${esc(article.title)}</h1>
+    detailWrap.innerHTML = `
+      <div class="nd-back" onclick="closeNewsDetail()">← Voltar para notícias</div>
+      <span class="nd-cat" style="background:${n.category === 'spfcnet' ? 'var(--blue)' : n.category === 'saopaulofc' ? 'var(--green)' : n.category === 'institucional' ? 'var(--gray-2)' : 'var(--red)'}">${label}</span>
+      <h1 class="nd-title">${esc(n.title)}</h1>
       <div class="nd-meta">
-        <span>📅 ${formatDate(article.created_at)}</span>
+        <span>📅 ${date}</span>
+        <span>⏱️ Leitura: ${readTime} min</span>
       </div>
-      <div class="nd-body">${esc(article.body)}</div>
+      ${imgHTML}
+      <div class="nd-body">${convertUrlsToLinks(cleanedBody).replace(/\n/g, '<br>')}</div>
+      ${originalLink ? `
+        <div style="margin-top:40px;padding:20px;background:var(--bg-2);border:1px solid var(--gray-3);border-radius:var(--r);text-align:center;">
+          <p style="color:var(--gray-1);margin-bottom:12px;font-size:.9rem;">📰 Leia a matéria completa no site original</p>
+          <a href="${originalLink}" target="_blank" rel="noopener noreferrer" 
+             style="display:inline-block;padding:12px 24px;background:var(--red);color:#fff;border-radius:var(--r);text-decoration:none;font-weight:700;font-size:.9rem;transition:var(--trans);box-shadow:0 2px 8px rgba(232,25,44,.3);"
+             onmouseover="this.style.background='var(--red-2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(232,25,44,.4)'"
+             onmouseout="this.style.background='var(--red)';this.style.transform='translateY(0)';this.style.boxShadow='0 2px 8px rgba(232,25,44,.3)'">
+             🔗 Ver Matéria Completa
+          </a>
+        </div>
+      ` : ''}
       <div class="comments-sec">
-        <h3>💬 Comentários <span style="color:var(--gray-1);font-size:1.2rem">(${comments.length})</span></h3>
-        ${commentFormHTML}
-        <div class="comment-list" id="commentList">${comments.map(commentHTML).join('')}</div>
-        ${comments.length === 0 ? '<p style="color:var(--gray-2);font-size:.9rem;margin-top:8px">Seja o primeiro a comentar!</p>' : ''}
-      </div>`;
-
-    document.getElementById('newsGrid').style.display = 'none';
-    document.getElementById('catPills').style.display = 'none';
-    detail.classList.add('active');
+        <h3>Comentários da Torcida <span style="color:var(--gray-1);font-size:1.2rem" id="commentCountBadge"></span></h3>
+        <div id="commentList" class="comment-list"></div>
+        ${currentUser ? `
+          <div class="comment-form-wrap">
+            <textarea id="commentInput" placeholder="Deixe sua opinião sobre essa notícia..."></textarea>
+            <button class="btn btn-red" onclick="postComment(${n.id})">Enviar</button>
+          </div>
+        ` : `
+          <div class="login-prompt">Faça <a onclick="openModal('login')">login</a> para comentar nesta notícia.</div>
+        `}
+      </div>
+    `;
+    loadComments(n.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch(e) { showToast('Erro ao carregar notícia'); }
+  } catch(e) {
+    detailWrap.innerHTML = '<p style="color:var(--red)">Erro ao carregar notícia.</p>';
+  }
+}
+
+function closeNewsDetail() {
+  document.getElementById('newsDetail').classList.remove('active');
+  document.getElementById('newsGrid').style.display = '';
+  document.getElementById('catPills').style.display = '';
+  loadNews();
 }
 
 async function postComment(newsId) {
@@ -1356,21 +1483,20 @@ async function postComment(newsId) {
     list.insertAdjacentHTML('afterbegin', commentHTML(comment));
     input.value = '';
     showToast('Comentário enviado! ✅');
-    // Update count
-    const h3 = document.querySelector('.comments-sec h3');
-    if (h3) {
-      const cur = list.querySelectorAll('.comment-item').length;
-      h3.innerHTML = `💬 Comentários <span style="color:var(--gray-1);font-size:1.2rem">(${cur})</span>`;
-    }
+    const cur = list.querySelectorAll('.comment-item').length;
+    const badge = document.getElementById('commentCountBadge');
+    if (badge) badge.textContent = `(${cur})`;
   } catch(e) { showToast('Erro ao enviar comentário'); }
 }
 
 function commentHTML(c) {
-  const ini = c.username.charAt(0).toUpperCase();
+  const avatarHtml = c.avatar 
+    ? `<img src="${c.avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--red)">`
+    : `<div class="c-av">${c.username.charAt(0).toUpperCase()}</div>`;
   return `
     <div class="comment-item">
       <div class="comment-head">
-        <div class="c-av">${ini}</div>
+        ${avatarHtml}
         <span class="c-user">${esc(c.username)}</span>
         <span class="c-time">${formatDate(c.created_at)}</span>
       </div>
@@ -1378,80 +1504,17 @@ function commentHTML(c) {
     </div>`;
 }
 
-// ============================================================
-// MATCHES PAGE
-// ============================================================
-async function loadMatches() {
+async function loadComments(newsId) {
   try {
-    const res = await fetch('/api/matches');
-    const matches = await res.json();
-    document.getElementById('matchesList').innerHTML = matches.map(m => {
-      const d = new Date(m.match_date + 'T12:00:00');
-      const dayName = DAYS[d.getDay()];
-      const dateStr = `${d.getDate()} de ${MONTHS_FULL[d.getMonth()]}`;
-      const homeAway = m.is_home ? 'home' : 'away';
-      const team1 = m.is_home ? 'São Paulo' : m.opponent;
-      const team2 = m.is_home ? m.opponent : 'São Paulo';
-      const comp = m.competition.toLowerCase();
-      let badgeClass = 'mb-brasileiro';
-      if (comp.includes('libertadores')) badgeClass = 'mb-libertadores';
-      else if (comp.includes('copa')) badgeClass = 'mb-copa';
-      const homeTag = m.is_home
-        ? '<span style="font-size:.7rem;background:rgba(232,25,44,.15);color:var(--red);padding:2px 6px;border-radius:3px;font-family:var(--font-c);font-weight:700;letter-spacing:.5px">CASA</span>'
-        : '<span style="font-size:.7rem;background:var(--bg-4);color:var(--gray-1);padding:2px 6px;border-radius:3px;font-family:var(--font-c);font-weight:700;letter-spacing:.5px">FORA</span>';
-      return `
-        <div class="match-card ${homeAway}">
-          <div>
-            <div class="match-team">${team1}</div>
-            ${homeTag}
-          </div>
-          <div class="match-vs">VS</div>
-          <div class="match-info">
-            <div class="match-team">${team2}</div>
-            <div class="match-date">${dayName}, ${dateStr}</div>
-            <div class="match-detail">${m.match_time} · ${esc(m.stadium)}</div>
-            <span class="match-badge ${badgeClass}">${esc(m.competition)}</span>
-          </div>
-        </div>`;
-    }).join('') || '<p style="color:var(--gray-1);text-align:center;padding:40px 0">Nenhum jogo agendado</p>';
-  } catch(e) { showToast('Erro ao carregar jogos'); }
+    const res = await fetch(`/api/news/${newsId}/comments`);
+    const comments = await res.json();
+    const list = document.getElementById('commentList');
+    list.innerHTML = comments.map(commentHTML).join('');
+    const badge = document.getElementById('commentCountBadge');
+    if (badge) badge.textContent = `(${comments.length})`;
+  } catch(e) {}
 }
 
-// ============================================================
-// STANDINGS PAGE
-// ============================================================
-async function loadStandings() {
-  try {
-    const res = await fetch('/api/standings');
-    const standings = await res.json();
-    document.getElementById('standingsBody').innerHTML = standings.map(s => {
-      const isSPFC = s.team === 'São Paulo';
-      const rowClass = isSPFC ? ' class="spfc"' : '';
-      let zoneClass = '';
-      if (s.position <= 4) zoneClass = 'zl';
-      else if (s.position <= 6) zoneClass = 'zs';
-      else if (s.position >= 17) zoneClass = 'zr';
-      const sg = s.gf - s.ga;
-      const sgStr = sg > 0 ? `+${sg}` : `${sg}`;
-      const teamCell = isSPFC
-        ? `<div class="team-cell">${esc(s.team)} <span class="spfc-tag">SPFC</span></div>`
-        : `<div class="team-cell">${esc(s.team)}</div>`;
-      return `
-        <tr${rowClass}>
-          <td class="${zoneClass}"><span class="pos-badge">${s.position}</span></td>
-          <td>${teamCell}</td>
-          <td class="pts-bold">${s.points}</td>
-          <td>${s.played}</td><td>${s.won}</td><td>${s.drawn}</td><td>${s.lost}</td>
-          <td>${s.gf}</td><td>${s.ga}</td>
-          <td style="color:${sg>0?'#4a4':'#e44'}">${sgStr}</td>
-        </tr>`;
-    }).join('');
-  } catch(e) { showToast('Erro ao carregar classificação'); }
-}
-
-// ============================================================
-// CHAT
-// ============================================================
 function connectChat() {
   if (socket) return;
   socket = io();
@@ -1481,11 +1544,14 @@ function appendChatMsg(msg) {
 }
 
 function chatMsgHTML(msg) {
-  const ini = msg.username.charAt(0).toUpperCase();
   const time = new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+  const avatarHtml = msg.avatar 
+    ? `<img src="${msg.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--red)">`
+    : `<div class="chat-av">${msg.username.charAt(0).toUpperCase()}</div>`;
+
   return `
     <div class="chat-msg">
-      <div class="chat-av">${ini}</div>
+      ${avatarHtml}
       <div class="chat-bubble">
         <div class="chat-user">${esc(msg.username)}</div>
         <div class="chat-text">${esc(msg.message)}</div>
@@ -1506,30 +1572,73 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.activeElement === document.getElementById('chatInput')) sendChat();
 });
 
-// ============================================================
-// PROFILE
-// ============================================================
 function loadProfile() {
   if (!currentUser) return;
-  document.getElementById('profileAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+  const avatarImg = document.getElementById('profileAvatarImg');
+  const avatarText = document.getElementById('profileAvatarText');
+  
+  if (currentUser.avatar) {
+    avatarImg.src = currentUser.avatar;
+    avatarImg.style.display = 'block';
+    avatarText.style.display = 'none';
+  } else {
+    avatarText.textContent = currentUser.username.charAt(0).toUpperCase();
+    avatarImg.style.display = 'none';
+    avatarText.style.display = 'flex';
+  }
+
   document.getElementById('profileUsername').value = currentUser.username;
   document.getElementById('profileEmail').value = currentUser.email;
   document.getElementById('profileBio').value = currentUser.bio || '';
 }
 
-// ============================================================
-// UTILS
-// ============================================================
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+async function saveProfile(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('profileError');
+  errEl.classList.remove('show');
+  const newUsername = document.getElementById('profileUsername').value.trim();
+  const newBio = document.getElementById('profileBio').value.trim();
+
+  if (!newUsername) {
+    errEl.textContent = 'O nome de usuário não pode ser vazio.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/profile', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: newUsername, bio: newBio })
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Erro ao salvar perfil.'; errEl.classList.add('show'); return; }
+    
+    currentUser.username = newUsername;
+    currentUser.bio = newBio;
+    updateAuthUI(); 
+    loadProfile(); 
+    showToast('Perfil atualizado com sucesso! 🔴⚪⚫');
+  } catch(e) {
+    errEl.textContent = 'Erro de conexão ao salvar.';
+    errEl.classList.add('show');
+  }
 }
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Data não disponível';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return 'Data inválida';
+  // Usa métodos UTC para evitar problemas de fuso horário
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()] || 'Mês'}`;
+}
+
 function esc(str) {
   if (!str) return '';
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
 }
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1537,27 +1646,21 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-// ============================================================
-// DATA STATUS
-// ============================================================
 async function updateDataStatus() {
   try {
     const res = await fetch('/api/data-status');
     const status = await res.json();
     const el = document.getElementById('dataStatus');
-    if (status.lastRefresh) {
+    if (status && status.lastRefresh) {
       const d = new Date(status.lastRefresh);
       const timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       el.textContent = `🔄 Dados atualizados automaticamente às ${timeStr}`;
     }
-  } catch (e) {
-    // Silently fail
-  }
+  } catch (e) {}
 }
-// Check status on load and every 5 minutes
 updateDataStatus();
 setInterval(updateDataStatus, 5 * 60 * 1000);
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
