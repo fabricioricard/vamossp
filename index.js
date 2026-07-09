@@ -48,17 +48,13 @@ const avatarUpload = multer({
       cb(null, 'avatar-' + uniqueSuffix + path.extname(file.originalname));
     }
   }),
-  limits: { fileSize: 2 * 1024 * 1024 }, // Limite de 2MB
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Apenas imagens são permitidas'), false);
-    }
+    if (!file.mimetype.startsWith('image/')) return cb(new Error('Apenas imagens são permitidas'));
+    cb(null, true);
   }
 });
 
-// --- Database Setup ---
 const db = new Database(path.join(__dirname, 'tricolor.db'));
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
@@ -93,6 +89,15 @@ function initDatabase() {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (news_id) REFERENCES news(id),
       FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    CREATE TABLE IF NOT EXISTS comment_likes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      comment_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      UNIQUE(comment_id, user_id)
     );
     CREATE TABLE IF NOT EXISTS chat_messages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -267,9 +272,12 @@ app.get('/api/news/:id', (req, res) => {
 
 app.get('/api/news/:id/comments', (req, res) => {
   const comments = db.prepare(`
-    SELECT c.*, u.username, u.avatar FROM comments c
+    SELECT c.*, u.username, u.avatar,
+      (SELECT COUNT(*) FROM comment_likes WHERE comment_id = c.id) as likes
+    FROM comments c
     JOIN users u ON c.user_id = u.id
-    WHERE c.news_id = ? ORDER BY c.created_at DESC
+    WHERE c.news_id = ? 
+    ORDER BY likes DESC, c.created_at DESC
   `).all(req.params.id);
   res.json(comments);
 });
@@ -283,6 +291,46 @@ app.post('/api/news/:id/comments', requireAuth, (req, res) => {
     JOIN users u ON c.user_id = u.id WHERE c.id = ?
   `).get(result.lastInsertRowid);
   res.json(comment);
+});
+
+// Deletar comentário (só o dono pode)
+app.delete('/api/comments/:id', requireAuth, (req, res) => {
+  const comment = db.prepare('SELECT * FROM comments WHERE id = ?').get(req.params.id);
+  if (!comment) return res.status(404).json({ error: 'Comentário não encontrado' });
+  if (comment.user_id !== req.session.userId) return res.status(403).json({ error: 'Você não pode deletar este comentário' });
+  
+  db.prepare('DELETE FROM comments WHERE id = ?').run(req.params.id);
+  res.json({ success: true });
+});
+
+// Curtir comentário
+app.post('/api/comments/:id/like', requireAuth, (req, res) => {
+  try {
+    db.prepare('INSERT INTO comment_likes (comment_id, user_id) VALUES (?, ?)').run(req.params.id, req.session.userId);
+    const likes = db.prepare('SELECT COUNT(*) as count FROM comment_likes WHERE comment_id = ?').get(req.params.id);
+    res.json({ success: true, likes: likes.count });
+  } catch (e) {
+    if (e.message.includes('UNIQUE')) {
+      return res.status(400).json({ error: 'Você já curtiu este comentário' });
+    }
+    res.status(500).json({ error: 'Erro ao curtir comentário' });
+  }
+});
+
+// Remover like
+app.delete('/api/comments/:id/like', requireAuth, (req, res) => {
+  db.prepare('DELETE FROM comment_likes WHERE comment_id = ? AND user_id = ?').run(req.params.id, req.session.userId);
+  const likes = db.prepare('SELECT COUNT(*) as count FROM comment_likes WHERE comment_id = ?').get(req.params.id);
+  res.json({ success: true, likes: likes.count });
+});
+
+// Verificar se usuário curtiu comentários (para uma notícia específica)
+app.get('/api/comments/:newsId/liked', requireAuth, (req, res) => {
+  const liked = db.prepare(`
+    SELECT comment_id FROM comment_likes 
+    WHERE user_id = ? AND comment_id IN (SELECT id FROM comments WHERE news_id = ?)
+  `).all(req.session.userId, req.params.newsId).map(row => row.comment_id);
+  res.json({ liked });
 });
 
 app.get('/api/matches', (req, res) => {

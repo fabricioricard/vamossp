@@ -7,6 +7,17 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230a0a0a'/%3E%3Crect x='8' y='20' width='25' height='60' rx='2' fill='%23e11'/%3E%3Crect x='37' y='20' width='26' height='60' rx='2' fill='%23f5f5f5'/%3E%3Crect x='67' y='20' width='25' height='60' rx='2' fill='%23222'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- PWA Meta Tags -->
+<meta name="theme-color" content="#e8192c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vamos SP">
+<meta name="application-name" content="Vamos São Paulo">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%230a0a0a'/%3E%3Crect x='8' y='20' width='25' height='60' rx='2' fill='%23e11'/%3E%3Crect x='37' y='20' width='26' height='60' rx='2' fill='%23f5f5f5'/%3E%3Crect x='67' y='20' width='25' height='60' rx='2' fill='%23222'/%3E%3C/svg%3E">
+
 <script src="/socket.io/socket.io.js"></script>
 <style>
 /* =========================================================
@@ -1493,14 +1504,27 @@ function commentHTML(c) {
   const avatarHtml = c.avatar 
     ? `<img src="${c.avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--red)">`
     : `<div class="c-av">${c.username.charAt(0).toUpperCase()}</div>`;
+  
+  const isOwner = currentUser && c.user_id === currentUser.id;
+  const isLiked = window.likedComments && window.likedComments.includes(c.id);
+  const likes = c.likes || 0;
+  
   return `
-    <div class="comment-item">
+    <div class="comment-item" data-comment-id="${c.id}">
       <div class="comment-head">
         ${avatarHtml}
         <span class="c-user">${esc(c.username)}</span>
         <span class="c-time">${formatDate(c.created_at)}</span>
+        ${isOwner ? `<button onclick="deleteComment(${c.id}, ${c.news_id})" style="margin-left:auto;background:none;border:none;color:var(--gray-2);cursor:pointer;font-size:.75rem;padding:2px 6px;border-radius:3px;" onmouseover="this.style.color=var(--red);this.style.background='rgba(232,25,44,.1)'" onmouseout="this.style.color='var(--gray-2)';this.style.background='none'">🗑️</button>` : ''}
       </div>
       <div class="c-text">${esc(c.content)}</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+        ${currentUser ? `
+          <button onclick="toggleLike(${c.id}, ${c.news_id})" style="background:none;border:none;cursor:pointer;font-size:.85rem;padding:2px 6px;border-radius:3px;transition:all .2s;${isLiked ? 'color:var(--red);background:rgba(232,25,44,.1);' : 'color:var(--gray-2);'}" onmouseover="this.style.background='${isLiked ? 'rgba(232,25,44,.15)' : 'var(--bg-3)'}'" onmouseout="this.style.background='${isLiked ? 'rgba(232,25,44,.1)' : 'none'}'">
+            ${isLiked ? '❤️' : '🤍'} <span style="font-size:.75rem;font-weight:600;">${likes}</span>
+          </button>
+        ` : `<span style="font-size:.75rem;color:var(--gray-2);">🤍 ${likes}</span>`}
+      </div>
     </div>`;
 }
 
@@ -1508,11 +1532,66 @@ async function loadComments(newsId) {
   try {
     const res = await fetch(`/api/news/${newsId}/comments`);
     const comments = await res.json();
+    
+    // Buscar quais comentários o usuário curtiu
+    if (currentUser) {
+      const likedRes = await fetch(`/api/comments/${newsId}/liked`);
+      const likedData = await likedRes.json();
+      window.likedComments = likedData.liked || [];
+    } else {
+      window.likedComments = [];
+    }
+    
     const list = document.getElementById('commentList');
     list.innerHTML = comments.map(commentHTML).join('');
     const badge = document.getElementById('commentCountBadge');
     if (badge) badge.textContent = `(${comments.length})`;
   } catch(e) {}
+}
+
+async function toggleLike(commentId, newsId) {
+  if (!currentUser) return;
+  
+  try {
+    const isLiked = window.likedComments && window.likedComments.includes(commentId);
+    const method = isLiked ? 'DELETE' : 'POST';
+    const res = await fetch(`/api/comments/${commentId}/like`, { method });
+    
+    if (res.ok) {
+      const data = await res.json();
+      
+      // Atualizar estado local
+      if (isLiked) {
+        window.likedComments = window.likedComments.filter(id => id !== commentId);
+      } else {
+        if (!window.likedComments) window.likedComments = [];
+        window.likedComments.push(commentId);
+      }
+      
+      // Recarregar comentários
+      loadComments(newsId);
+    }
+  } catch(e) {
+    console.error('Erro ao curtir:', e);
+  }
+}
+
+async function deleteComment(commentId, newsId) {
+  if (!confirm('Tem certeza que deseja deletar este comentário?')) return;
+  
+  try {
+    const res = await fetch(`/api/comments/${commentId}`, { method: 'DELETE' });
+    
+    if (res.ok) {
+      loadComments(newsId);
+      showToast('Comentário deletado!');
+    } else {
+      const data = await res.json();
+      showToast(data.error || 'Erro ao deletar comentário');
+    }
+  } catch(e) {
+    showToast('Erro ao deletar comentário');
+  }
 }
 
 function connectChat() {
@@ -1660,6 +1739,130 @@ async function updateDataStatus() {
 }
 updateDataStatus();
 setInterval(updateDataStatus, 5 * 60 * 1000);
+</script>
+
+<!-- PWA Registration & Install Banner -->
+<script>
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => {
+        console.log('[PWA] Service Worker registrado:', reg.scope);
+      })
+      .catch((err) => {
+        console.log('[PWA] Falha ao registrar SW:', err);
+      });
+  });
+}
+
+// Banner de instalação do PWA
+let deferredPrompt;
+const installBanner = document.createElement('div');
+installBanner.id = 'pwaInstallBanner';
+installBanner.style.cssText = `
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 2px solid #e8192c;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(232,25,44,0.3);
+  z-index: 10000;
+  max-width: 90%;
+  width: 400px;
+  font-family: 'Barlow', sans-serif;
+  color: #f2f2f5;
+  backdrop-filter: blur(10px);
+`;
+
+installBanner.innerHTML = `
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <div style="flex-shrink: 0;">
+      <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="12" fill="#0a0a0a"/>
+        <rect x="8" y="20" width="25" height="60" rx="2" fill="#e11"/>
+        <rect x="37" y="20" width="26" height="60" rx="2" fill="#f5f5f5"/>
+        <rect x="67" y="20" width="25" height="60" rx="2" fill="#222"/>
+      </svg>
+    </div>
+    <div style="flex: 1;">
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 1px; margin-bottom: 4px;">
+        INSTALAR APP
+      </div>
+      <div style="font-size: 0.85rem; color: #a0a0b0; line-height: 1.3;">
+        Tenha o Vamos São Paulo sempre com você!
+      </div>
+    </div>
+    <button id="pwaInstallBtn" style="
+      background: #e8192c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+    ">Instalar</button>
+    <button id="pwaCloseBtn" style="
+      background: none;
+      border: none;
+      color: #606070;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      margin-left: 4px;
+    ">×</button>
+  </div>
+`;
+
+document.body.appendChild(installBanner);
+
+// Event listeners do banner
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // Mostrar banner apenas se não foi dispensado antes
+  if (!localStorage.getItem('pwaDismissed')) {
+    installBanner.style.display = 'block';
+  }
+});
+
+document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`[PWA] Usuário ${outcome === 'accepted' ? 'instalou' : 'recusou'} o app`);
+    deferredPrompt = null;
+    installBanner.style.display = 'none';
+  }
+});
+
+document.getElementById('pwaCloseBtn').addEventListener('click', () => {
+  installBanner.style.display = 'none';
+  localStorage.setItem('pwaDismissed', 'true');
+});
+
+// Detectar se já está instalado
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] App instalado com sucesso!');
+  installBanner.style.display = 'none';
+  localStorage.removeItem('pwaDismissed');
+});
+
+// Mostrar banner novamente se foi instalado e depois removido
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  console.log('[PWA] Rodando como app standalone');
+}
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
