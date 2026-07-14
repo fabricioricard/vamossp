@@ -11,7 +11,24 @@ const fs = require('fs');
 
 // --- Firebase Admin Setup ---
 const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-admin-key.json');
+
+// Carrega credenciais do Firebase
+// Em produção (Render/Vercel): usa variáveis de ambiente
+// Em desenvolvimento local: usa arquivo JSON
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+  // Produção: variável de ambiente (JSON como string)
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+} else {
+  // Desenvolvimento: arquivo local
+  try {
+    serviceAccount = require('./firebase-admin-key.json');
+  } catch (e) {
+    console.error('❌ Firebase credentials not found!');
+    console.error('Set FIREBASE_SERVICE_ACCOUNT_KEY env variable or add firebase-admin-key.json');
+    process.exit(1);
+  }
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
